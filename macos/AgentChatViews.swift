@@ -105,8 +105,7 @@ final class AgentConversationView: NSView {
         let message = AgentMessageView(text: text, isUser: isUser)
         message.isHidden = showingMath
         messages.append(message); addSubview(message)
-        if !isUser && !mathFailed && mathView == nil &&
-            (text.contains("$") || text.contains("\\(") || text.contains("\\[") || text.contains("\\begin{") || text.contains("```latex") || text.contains("```math") || text.contains("```tex")) {
+        if !isUser && !mathFailed && mathView == nil {
             enableMath()
         }
         updateMath(); reflow(width: bounds.width)

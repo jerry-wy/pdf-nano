@@ -34,7 +34,7 @@ struct AgentRendererAssets {
         """
         // WKUserScript is trusted application code, independent of the document's
         // CSP. Replies still enter only through structured arguments/text nodes.
-        script = try ["vendor/katex/katex.min.js", "vendor/katex/copy-tex.min.js", "math-renderer.js", "reader.js"]
+        script = try ["vendor/katex/katex.min.js", "vendor/katex/copy-tex.min.js", "vendor/markdown-it/markdown-it.min.js", "math-renderer.js", "reader.js"]
             .map { try read($0) }.joined(separator: "\n;\n")
     }
 }

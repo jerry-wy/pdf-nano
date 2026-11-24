@@ -16,3 +16,11 @@ pre { white-space: pre; overflow-x: auto; padding: 10px; background: var(--bubbl
 pre code { padding: 0; background: none; }
 .formula-source { color: var(--muted); }
 ::selection { background: rgba(70,130,220,.25); }
+.assistant .body { white-space: normal; }
+.body > :first-child { margin-top: 0; }
+.body > :last-child { margin-bottom: 0; }
+.body p, .body ul, .body ol { margin: .55em 0; }
+.body ul, .body ol { padding-left: 1.6em; }
+.body blockquote { margin: .6em 0; border-left: 3px solid var(--muted); padding-left: .8em; }
+.body table { display: block; overflow-x: auto; border-collapse: collapse; }
+.body th, .body td { padding: .3em .5em; border: 1px solid var(--muted); }

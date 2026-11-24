@@ -10,8 +10,16 @@ mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources" "$CACHE"
 cp macos/Info.plist "$APP/Contents/Info.plist"
 cp macos/Welcome.pdf "$APP/Contents/Resources/Welcome.pdf"
 cp -R macos/AgentRenderer "$APP/Contents/Resources/AgentRenderer"
-ARCH="$(uname -m)"
-xcrun swiftc -swift-version 5 -O -module-name PDFNano -module-cache-path "$CACHE" -target "$ARCH-apple-macosx13.0" macos/main.swift macos/App.swift macos/Icons.swift macos/Document.swift macos/OCRTextLayer.swift macos/OCRRecognition.swift macos/OCRProgressView.swift macos/Reader.swift macos/PageSidebar.swift macos/OutlineLayout.swift macos/OutlineTracking.swift macos/ReaderPanels.swift macos/ModelPicker.swift macos/MarginNotes.swift macos/AgentBridge.swift macos/CodexAccount.swift macos/AgentAccountView.swift macos/ReadingAgent.swift macos/AgentPanel.swift macos/AgentChatViews.swift macos/AgentMathTranscript.swift macos/AgentRendererAssets.swift macos/ChatHistory.swift macos/ChatHistoryView.swift macos/SmokeTests.swift -o "$APP/Contents/MacOS/PDFNano" -framework AppKit -framework PDFKit -framework Vision -framework WebKit
+ARCHS=("$(uname -m)")
+if [[ "${1:-}" == "--universal" ]]; then
+    ARCHS=(arm64 x86_64)
+fi
+BINARIES=()
+for ARCH in "${ARCHS[@]}"; do
+    xcrun swiftc -swift-version 5 -O -module-name PDFNano -module-cache-path "$CACHE" -target "$ARCH-apple-macosx13.0" macos/main.swift macos/App.swift macos/Icons.swift macos/Document.swift macos/OCRTextLayer.swift macos/OCRRecognition.swift macos/OCRProgressView.swift macos/Reader.swift macos/PageSidebar.swift macos/OutlineLayout.swift macos/OutlineTracking.swift macos/ReaderPanels.swift macos/ModelPicker.swift macos/MarginNotes.swift macos/AgentBridge.swift macos/CodexAccount.swift macos/AgentAccountView.swift macos/ReadingAgent.swift macos/AgentPanel.swift macos/AgentChatViews.swift macos/AgentMathTranscript.swift macos/AgentRendererAssets.swift macos/ChatHistory.swift macos/ChatHistoryView.swift macos/SmokeTests.swift -o "$STAGING/PDFNano-$ARCH" -framework AppKit -framework PDFKit -framework Vision -framework WebKit
+    BINARIES+=("$STAGING/PDFNano-$ARCH")
+done
+xcrun lipo -create "${BINARIES[@]}" -output "$APP/Contents/MacOS/PDFNano"
 xcrun swiftc -module-cache-path "$CACHE" macos/MakeIcon.swift -o build/make-icon
 build/make-icon "$PWD/build/AppIcon.iconset"
 cp build/AppIcon.iconset/icon_32x32@2x.png "$APP/Contents/Resources/TitleIcon.png"

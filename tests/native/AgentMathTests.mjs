@@ -7,8 +7,9 @@ import crypto from 'node:crypto';
 const root = path.resolve('macos/AgentRenderer');
 const context = vm.createContext({console});
 vm.runInContext(fs.readFileSync(path.join(root, 'vendor/katex/katex.min.js'), 'utf8'), context);
+vm.runInContext(fs.readFileSync(path.join(root, 'vendor/markdown-it/markdown-it.min.js'), 'utf8'), context);
 vm.runInContext(fs.readFileSync(path.join(root, 'math-renderer.js'), 'utf8'), context);
-const {render, tokenize} = context.PDFNanoMath;
+const {render} = context.PDFNanoMath;
 const cases = [
   ['inline dollar', String.raw`The risk is $R(f)=\mathbb{E}[\ell(f(X),Y)]$.`, 1],
   ['inline parentheses', String.raw`设 \(x_i \in \mathbb{R}^d\)，则成立。`, 1],
@@ -26,8 +27,8 @@ for (const [label, text, count] of cases) {
   assert.ok(!html.includes('formula-source'), `${label}: rendered successfully`);
   console.log(`PASS: ${label}`);
 }
-assert.equal(tokenize(String.raw`Price is \$5 and \$10.`).filter(x => x.type === 'math').length, 0);
-assert.equal(tokenize('Price is $5 and $10.').filter(x => x.type === 'math').length, 0);
+assert.equal(render(String.raw`Price is \$5 and \$10.`).includes('class="katex"'), false);
+assert.equal(render('Price is $5 and $10.').includes('class="katex"'), false);
 assert.ok(!render('`$raw$`\n```python\nprint("$raw$")\n```').includes('class="katex"'));
 assert.ok(render('`$raw$`').includes('<code>$raw$</code>'));
 assert.ok(render(String.raw`Bad \[\frac{a\] remains readable.`).includes('formula-source'));
@@ -50,3 +51,7 @@ const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 assert.ok(html.includes("connect-src 'none'"));
 assert.ok(!/<(?:script|link)[^>]+(?:src|href)="https?:/i.test(html));
 console.log('PASS: Pinned engine, fonts, and scripts are bundled; no CDN or network requests');
+const mixed = render('## 结论\n\n- **均值 $x_i$**\n- `$literal$`\n\n| 项目 | 公式 |\n| --- | --- |\n| A | $x^2$ |');
+for (const tag of ['<h2>', '<ul>', '<strong>', '<table>', '<code>$literal$</code>']) assert.ok(mixed.includes(tag), tag);
+assert.equal((mixed.match(/class="katex"/g) || []).length, 2);
+assert.ok(render('~~~latex\n\\[x^2\\]\n~~~').includes('class="katex"'));

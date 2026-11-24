@@ -16,8 +16,7 @@ private final class ReaderMathMessageHandler: NSObject, WKScriptMessageHandler {
     }
 }
 
-// One small offline WebKit view for the transcript, only created when a reply
-// contains math. PDF rendering and the rest of the reader remain native.
+// One small offline WebKit view for the transcript, created with the first Agent reply. PDF rendering and the rest of the reader remain native.
 final class AgentMathTranscript: NSView, WKNavigationDelegate {
     var onHeight: ((CGFloat) -> Void)?
     var onFailure: (() -> Void)?

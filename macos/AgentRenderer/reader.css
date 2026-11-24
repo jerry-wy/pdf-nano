@@ -1,0 +1,18 @@
+:root { color-scheme: light dark; --ink: #242424; --muted: #777; --bubble: rgba(127,127,127,.08); }
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: transparent; color: var(--ink); font: 13px -apple-system, BlinkMacSystemFont, sans-serif; }
+body { overflow: hidden; }
+#messages { padding: 8px 8px 0; }
+.message { margin: 0 0 16px; padding: 9px 12px 14px; }
+.caption { color: var(--muted); font-size: 10px; font-weight: 600; margin-bottom: 8px; }
+.body { white-space: pre-wrap; overflow-wrap: anywhere; line-height: 1.6; }
+.user { width: fit-content; max-width: 85%; margin-left: auto; margin-right: 0; border-radius: 14px; padding: 12px; background: var(--bubble); }
+.katex { font-size: 1.08em; white-space: normal; line-height: 1.2; }
+.katex-display { margin: 12px 0; padding: 5px 2px 9px; overflow-x: auto; overflow-y: hidden; text-align: left; }
+.katex-display > .katex { text-align: left; }
+code, .formula-source { font-family: ui-monospace, Menlo, monospace; font-size: .95em; }
+code { background: var(--bubble); border-radius: 4px; padding: 1px 4px; }
+pre { white-space: pre; overflow-x: auto; padding: 10px; background: var(--bubble); border-radius: 8px; }
+pre code { padding: 0; background: none; }
+.formula-source { color: var(--muted); }
+::selection { background: rgba(70,130,220,.25); }

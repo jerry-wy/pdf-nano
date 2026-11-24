@@ -1,0 +1,30 @@
+{
+  "name": "pdf-nano",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview --host 127.0.0.1",
+    "test": "playwright test",
+    "postinstall": "node scripts/prepare-assets.mjs",
+    "mac:build": "bash scripts/build-mac.sh",
+    "mac:open": "bash \"Launch PDF Nano.command\"",
+    "mac:test:ocr": "bash scripts/test-ocr-layer.sh",
+    "mac:test": "\"/Applications/PDF Nano.app/Contents/MacOS/PDFNano\" --smoke-test"
+  },
+  "dependencies": {
+    "pdf-lib": "^1.17.1",
+    "pdfjs-dist": "^5.4.624",
+    "tesseract.js": "^7.0.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.58.2",
+    "typescript": "^5.9.3",
+    "vite": "^8.0.0"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  }
+}
